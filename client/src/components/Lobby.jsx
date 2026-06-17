@@ -32,10 +32,8 @@ export default function Lobby() {
           style={{ padding: '10px', fontSize: '1.2rem', fontFamily: 'inherit', textAlign: 'center' }}
         />
         
-        <button className="retro-btn" onClick={handleCreate} style={{ width: '100%' }}>Create New Room</button>
+        <button className="retro-btn" onClick={handleCreate} style={{ width: '100%' }}>Create Multiplayer Room</button>
         
-        <h2 style={{ margin: '10px 0' }}>OR</h2>
-
         <div style={{ display: 'flex', gap: '10px' }}>
           <input 
             placeholder="Room Code" 
@@ -45,6 +43,19 @@ export default function Lobby() {
           />
           <button className="retro-btn" onClick={handleJoin}>Join</button>
         </div>
+
+        <h2 style={{ margin: '10px 0', opacity: 0.7 }}>OR</h2>
+
+        <button 
+          className="retro-btn" 
+          onClick={() => {
+            const name = playerName || 'Player';
+            navigate(`/room/singleplayer?name=${name}&mode=bots`);
+          }} 
+          style={{ width: '100%', background: '#d00000', color: '#fff', borderColor: '#9d0208', boxShadow: '4px 4px 0px #9d0208' }}
+        >
+          Play Offline vs Bots
+        </button>
       </div>
     </div>
   );

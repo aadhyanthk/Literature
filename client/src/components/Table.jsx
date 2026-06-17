@@ -20,15 +20,6 @@ export default function Table() {
   // Custom hook that auto-syncs with Firebase Realtime Database
   const { gameState, performAsk, performDeclare } = useGameState(roomId, playerName, mode);
 
-  if (!gameState) {
-    return <div className="felt-table" style={{ color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}><h2>Connecting to Game Server...</h2></div>;
-  }
-
-  const playerObj = gameState.players?.[playerName] || { team: '?', hand: [] };
-  
-  const opponents = Object.keys(gameState.players || {}).filter(p => gameState.players[p].team !== playerObj.team);
-  const teamMembers = Object.keys(gameState.players || {}).filter(p => gameState.players[p].team === playerObj.team);
-  
   // Bot logic
   useEffect(() => {
     if (!gameState) return;
@@ -52,6 +43,15 @@ export default function Table() {
     }
   }, [gameState, playerName]);
 
+  if (!gameState) {
+    return <div className="felt-table" style={{ color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}><h2>Connecting to Game Server...</h2></div>;
+  }
+
+  const playerObj = gameState.players?.[playerName] || { team: '?', hand: [] };
+  
+  const opponents = Object.keys(gameState.players || {}).filter(p => gameState.players[p].team !== playerObj.team);
+  const teamMembers = Object.keys(gameState.players || {}).filter(p => gameState.players[p].team === playerObj.team);
+  
   // Use mock hand if the player has no cards yet (before dealing)
   const hand = playerObj.hand.length > 0 ? playerObj.hand : [
     { rank: '4', suit: 'Hearts' },

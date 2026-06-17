@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { ref, onValue, set, update } from 'firebase/database';
 import { db } from '../lib/firebase';
 
-export function useGameState(roomId, playerName) {
+export function useGameState(roomId, playerName, mode) {
   const [gameState, setGameState] = useState(null);
 
   useEffect(() => {
@@ -14,13 +14,24 @@ export function useGameState(roomId, playerName) {
       if (data) {
         setGameState(data);
       } else {
+        let initialPlayers = {
+          [playerName]: { name: playerName, team: 'A', hand: [], isBot: false }
+        };
+        
+        if (mode === 'bots') {
+          initialPlayers = {
+             ...initialPlayers,
+             'Bot1': { name: 'Bot1', team: 'A', hand: [], isBot: true },
+             'Bot2': { name: 'Bot2', team: 'B', hand: [], isBot: true },
+             'Bot3': { name: 'Bot3', team: 'B', hand: [], isBot: true }
+          };
+        }
+
         // Initialize room state if it does not exist
         const initialData = {
           status: 'waiting',
           turn: playerName, // The creator of the room starts
-          players: {
-            [playerName]: { name: playerName, team: 'A', hand: [] }
-          },
+          players: initialPlayers,
           log: [`Room created by ${playerName}`]
         };
         set(roomRef, initialData);

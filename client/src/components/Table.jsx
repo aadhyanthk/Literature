@@ -60,7 +60,7 @@ export default function Table() {
   ];
 
   return (
-    <div className="felt-table" style={{ overflowX: 'hidden', position: 'relative' }}>
+    <div className="felt-table" style={{ overflow: 'hidden', position: 'relative' }}>
       <Notebook isOpen={isNotebookOpen} toggleNotebook={() => setNotebookOpen(!isNotebookOpen)} />
       
       {/* Top Bar Info */}
@@ -70,7 +70,7 @@ export default function Table() {
       </div>
 
       {/* Center Action Area & Game Log */}
-      <div style={{ flex: 1, display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '20px' }}>
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '10px 0' }}>
         
         {/* Turn Actions Box */}
         {gameState.turn === playerName ? (
@@ -92,7 +92,7 @@ export default function Table() {
         )}
 
         {/* Realtime Action Log */}
-        <div style={{ marginTop: '30px', width: '400px', height: '200px', overflowY: 'auto', background: 'rgba(0,0,0,0.7)', padding: '15px', borderRadius: '10px', border: '1px solid #40916c' }}>
+        <div style={{ flex: 1, minHeight: 0, marginTop: '15px', width: '100%', maxWidth: '400px', overflowY: 'auto', background: 'rgba(0,0,0,0.7)', padding: '15px', borderRadius: '10px', border: '1px solid #40916c', boxSizing: 'border-box' }}>
           <h4 style={{ borderBottom: '1px solid #40916c', paddingBottom: '5px', marginTop: 0 }}>Game Log</h4>
           {gameState.log && gameState.log.map((msg, i) => (
             <div key={i} style={{ margin: '5px 0', fontFamily: 'monospace' }}>&gt; {msg}</div>
@@ -101,7 +101,7 @@ export default function Table() {
       </div>
 
       {/* Player's Hand Area */}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '10px' }}>
+      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px' }}>
         <h3>Your Hand</h3>
         <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
           {hand.map((card, index) => (

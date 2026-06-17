@@ -53,7 +53,7 @@ export default function Table() {
   const teamMembers = Object.keys(gameState.players || {}).filter(p => gameState.players[p].team === playerObj.team);
   
   // Use mock hand if the player has no cards yet (before dealing)
-  const hand = playerObj.hand.length > 0 ? playerObj.hand : [
+  const hand = (playerObj.hand && playerObj.hand.length > 0) ? playerObj.hand : [
     { rank: '4', suit: 'Hearts' },
     { rank: '5', suit: 'Hearts' },
     { rank: 'K', suit: 'Spades' }

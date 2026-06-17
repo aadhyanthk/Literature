@@ -1,6 +1,8 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useParams, useSearchParams } from 'react-router-dom';
 import Card from './Card';
+import AskModal from './AskModal';
+import DeclareModal from './DeclareModal';
 import { useGameState } from '../hooks/useGameState';
 
 export default function Table() {
@@ -8,6 +10,9 @@ export default function Table() {
   const [searchParams] = useSearchParams();
   const playerName = searchParams.get('name') || 'Player';
   
+  const [isAskModalOpen, setAskModalOpen] = useState(false);
+  const [isDeclareModalOpen, setDeclareModalOpen] = useState(false);
+
   // Custom hook that auto-syncs with Firebase Realtime Database
   const { gameState, performAsk, performDeclare } = useGameState(roomId, playerName);
 
@@ -16,6 +21,9 @@ export default function Table() {
   }
 
   const playerObj = gameState.players?.[playerName] || { team: '?', hand: [] };
+  
+  const opponents = Object.keys(gameState.players || {}).filter(p => gameState.players[p].team !== playerObj.team);
+  const teamMembers = Object.keys(gameState.players || {}).filter(p => gameState.players[p].team === playerObj.team);
   
   // Use mock hand if the player has no cards yet (before dealing)
   const hand = playerObj.hand.length > 0 ? playerObj.hand : [
@@ -39,12 +47,11 @@ export default function Table() {
         {gameState.turn === playerName ? (
           <div style={{ background: 'rgba(0,0,0,0.5)', padding: '20px', borderRadius: '15px', textAlign: 'center', border: '2px solid #ffb703', boxShadow: '0 0 15px #ffb703' }}>
             <h3 style={{ color: '#ffb703', margin: '0 0 15px 0' }}>It is your turn!</h3>
-            <div style={{ display: 'flex', gap: '15px' }}>
-              {/* These trigger the Firebase Database updates */}
-              <button className="retro-btn" onClick={() => performAsk(playerName, 'Opponent', { rank: '8', suit: 'Hearts'})}>
+            <div style={{ display: 'flex', gap: '15px', justifyContent: 'center' }}>
+              <button className="retro-btn" onClick={() => setAskModalOpen(true)}>
                 Ask for Card
               </button>
-              <button className="retro-btn" onClick={() => performDeclare(playerName, 'Low Hearts', {})}>
+              <button className="retro-btn" onClick={() => setDeclareModalOpen(true)}>
                 Declare Set
               </button>
             </div>
@@ -73,6 +80,20 @@ export default function Table() {
           ))}
         </div>
       </div>
+
+      <AskModal 
+        isOpen={isAskModalOpen} 
+        onClose={() => setAskModalOpen(false)} 
+        opponents={opponents}
+        onAsk={(opponent, card) => performAsk(playerName, opponent, card)}
+      />
+
+      <DeclareModal 
+        isOpen={isDeclareModalOpen} 
+        onClose={() => setDeclareModalOpen(false)} 
+        teamMembers={teamMembers}
+        onDeclare={(set, allocations) => performDeclare(playerName, set, allocations)}
+      />
     </div>
   );
 }

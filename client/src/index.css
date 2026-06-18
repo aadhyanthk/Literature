@@ -68,3 +68,27 @@ input {
   border: 2px solid #000;
   color: #000;
 }
+
+/* Card hover effect for overlapping player hand */
+.player-card {
+  transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s;
+}
+
+.player-card:hover {
+  transform: translateY(-20px);
+  box-shadow: 0 10px 20px rgba(0,0,0,0.8);
+  z-index: 100 !important;
+}
+
+/* Floating event bubble animation */
+@keyframes floatUpFade {
+  0% { opacity: 0; transform: translateY(20px); }
+  20% { opacity: 1; transform: translateY(0); }
+  80% { opacity: 1; transform: translateY(0); }
+  100% { opacity: 0; transform: translateY(-20px); }
+}
+
+.event-bubble {
+  animation: floatUpFade 4s forwards;
+  pointer-events: none;
+}

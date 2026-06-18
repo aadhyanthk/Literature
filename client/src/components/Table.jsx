@@ -5,6 +5,7 @@ import AskModal from './AskModal';
 import DeclareModal from './DeclareModal';
 import Notebook from './Notebook';
 import OpponentHand from './OpponentHand';
+import EventBubble from './EventBubble';
 import { useGameState } from '../hooks/useGameState';
 import { getBotAction } from '../bots/botEngine';
 
@@ -68,6 +69,8 @@ export default function Table() {
   ];
 
   const otherPlayers = Object.values(gameState.players || {}).filter(p => p.name !== playerName);
+  const teammate = otherPlayers.find(p => p.team === playerObj.team);
+  const opponents = otherPlayers.filter(p => p.team !== playerObj.team);
 
   return (
     <div className="felt-table" style={{ overflow: 'hidden', position: 'relative' }}>
@@ -80,13 +83,15 @@ export default function Table() {
       </div>
 
       {/* Opponents Area */}
-      {otherPlayers.map((p, index) => {
-         const pos = index === 0 ? 'left' : index === 1 ? 'top' : index === 2 ? 'right' : 'top';
-         return <OpponentHand key={p.name} player={p} position={pos} />
-      })}
+      {teammate && <OpponentHand key={teammate.name} player={teammate} position="top" />}
+      {opponents[0] && <OpponentHand key={opponents[0].name} player={opponents[0]} position="left" />}
+      {opponents[1] && <OpponentHand key={opponents[1].name} player={opponents[1]} position="right" />}
+
+      {/* Action Animation Bubbles */}
+      <EventBubble event={gameState.lastEvent} playerName={playerName} />
 
       {/* Center Action Area */}
-      <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', margin: '10px 0' }}>
+      <div style={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', zIndex: 5, display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
         
         {/* Turn Actions Box */}
         {gameState.turn === playerName ? (
@@ -109,11 +114,13 @@ export default function Table() {
       </div>
 
       {/* Player's Hand Area */}
-      <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px' }}>
-        <h3>Your Hand</h3>
-        <div style={{ display: 'flex', gap: '10px', flexWrap: 'wrap', justifyContent: 'center' }}>
+      <div style={{ position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px' }}>
+        <h3 style={{ margin: '5px' }}>Your Hand</h3>
+        <div style={{ display: 'flex', justifyContent: 'center', marginLeft: '30px' }}>
           {hand.map((card, index) => (
-            <Card key={index} rank={card.rank} suit={card.suit} />
+            <div key={index} className="player-card" style={{ marginLeft: '-30px' }}>
+              <Card rank={card.rank} suit={card.suit} small={false} />
+            </div>
           ))}
         </div>
       </div>

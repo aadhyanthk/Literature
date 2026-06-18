@@ -62,11 +62,34 @@ export function useGameState(roomId, playerName, mode) {
 
   const performAsk = (asker, targetPlayer, card) => {
     if (!gameState) return;
-    const logMsg = `${asker} asked ${targetPlayer} for the ${card.rank} of ${card.suit}`;
-    // Simple state update to Firebase
+    
+    const targetHand = gameState.players[targetPlayer]?.hand || [];
+    const hasCardIndex = targetHand.findIndex(c => c.rank === card.rank && c.suit === card.suit);
+    
+    let success = false;
+    let newPlayers = { ...gameState.players };
+    
+    // Ensure we create new hand arrays so Firebase triggers update
+    newPlayers[targetPlayer] = { ...newPlayers[targetPlayer], hand: [...targetHand] };
+    newPlayers[asker] = { ...newPlayers[asker], hand: [...(newPlayers[asker].hand || [])] };
+    
+    if (hasCardIndex !== -1) {
+      success = true;
+      const transferredCard = targetHand[hasCardIndex];
+      newPlayers[targetPlayer].hand.splice(hasCardIndex, 1);
+      newPlayers[asker].hand.push(transferredCard);
+    }
+    
+    const logMsg = `${asker} asked ${targetPlayer} for the ${card.rank} of ${card.suit}. ${success ? 'Success!' : 'Failed.'}`;
+    
+    // In Literature, if you succeed, you keep the turn. If you fail, the turn passes to the person you asked.
+    const nextTurn = success ? asker : targetPlayer;
+    
     update(ref(db, `rooms/${roomId}`), {
       log: [...(gameState.log || []), logMsg],
-      turn: targetPlayer // Passes turn to the asked player (simplified logic for now)
+      lastEvent: { type: 'ASK', asker, target: targetPlayer, card, success, timestamp: Date.now() },
+      turn: nextTurn,
+      players: newPlayers
     });
   };
 

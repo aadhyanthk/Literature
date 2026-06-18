@@ -1,6 +1,20 @@
 import React from 'react';
 
-export default function Card({ rank, suit }) {
+export default function Card({ rank, suit, faceDown }) {
+  if (faceDown) {
+    return (
+      <div style={{
+        width: '80px',
+        height: '120px',
+        backgroundColor: '#003049',
+        border: '2px solid #fff',
+        borderRadius: '8px',
+        boxShadow: '2px 2px 5px rgba(0,0,0,0.5)',
+        backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, #d62828 10px, #d62828 20px)'
+      }}></div>
+    );
+  }
+
   const isRed = suit === 'Hearts' || suit === 'Diamonds';
   const color = isRed ? '#d00000' : '#000000';
   

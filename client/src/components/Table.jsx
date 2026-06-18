@@ -4,6 +4,7 @@ import Card from './Card';
 import AskModal from './AskModal';
 import DeclareModal from './DeclareModal';
 import Notebook from './Notebook';
+import OpponentHand from './OpponentHand';
 import { useGameState } from '../hooks/useGameState';
 import { getBotAction } from '../bots/botEngine';
 
@@ -43,6 +44,13 @@ export default function Table() {
     }
   }, [gameState, playerName]);
 
+  // Log events to console instead of UI
+  useEffect(() => {
+    if (gameState?.log && gameState.log.length > 0) {
+      console.log("%cGAME EVENT:", "color: #ffb703; font-weight: bold", gameState.log[gameState.log.length - 1]);
+    }
+  }, [gameState?.log?.length]);
+
   if (!gameState) {
     return <div className="felt-table" style={{ color: 'white', display: 'flex', justifyContent: 'center', alignItems: 'center' }}><h2>Connecting to Game Server...</h2></div>;
   }
@@ -59,6 +67,8 @@ export default function Table() {
     { rank: 'K', suit: 'Spades' }
   ];
 
+  const otherPlayers = Object.values(gameState.players || {}).filter(p => p.name !== playerName);
+
   return (
     <div className="felt-table" style={{ overflow: 'hidden', position: 'relative' }}>
       <Notebook isOpen={isNotebookOpen} toggleNotebook={() => setNotebookOpen(!isNotebookOpen)} />
@@ -69,8 +79,15 @@ export default function Table() {
         <h2>Player: {playerName} (Team {playerObj.team})</h2>
       </div>
 
-      {/* Center Action Area & Game Log */}
-      <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', margin: '10px 0' }}>
+      {/* Opponents Area */}
+      <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%', marginTop: '10px', flexWrap: 'wrap' }}>
+        {otherPlayers.map(p => (
+          <OpponentHand key={p.name} player={p} />
+        ))}
+      </div>
+
+      {/* Center Action Area */}
+      <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', margin: '10px 0' }}>
         
         {/* Turn Actions Box */}
         {gameState.turn === playerName ? (
@@ -90,14 +107,6 @@ export default function Table() {
             <h3 style={{ opacity: 0.8 }}>Waiting for {gameState.turn}'s move...</h3>
           </div>
         )}
-
-        {/* Realtime Action Log */}
-        <div style={{ flex: 1, minHeight: 0, marginTop: '15px', width: '100%', maxWidth: '400px', overflowY: 'auto', background: 'rgba(0,0,0,0.7)', padding: '15px', borderRadius: '10px', border: '1px solid #40916c', boxSizing: 'border-box' }}>
-          <h4 style={{ borderBottom: '1px solid #40916c', paddingBottom: '5px', marginTop: 0 }}>Game Log</h4>
-          {gameState.log && gameState.log.map((msg, i) => (
-            <div key={i} style={{ margin: '5px 0', fontFamily: 'monospace' }}>&gt; {msg}</div>
-          ))}
-        </div>
       </div>
 
       {/* Player's Hand Area */}

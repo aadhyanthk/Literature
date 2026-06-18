@@ -94,3 +94,76 @@ input {
   animation: floatUpFade 4s forwards;
   pointer-events: none;
 }
+
+/* Event Bubble Tails */
+.event-bubble::before, .event-bubble::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 0;
+  border-style: solid;
+}
+
+/* Tail DOWN */
+.event-bubble.tail-down::before {
+  bottom: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 20px 15px 0 15px;
+  border-color: #ffb703 transparent transparent transparent;
+}
+.event-bubble.tail-down::after {
+  bottom: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 15px 12px 0 12px;
+  border-color: white transparent transparent transparent;
+}
+
+/* Tail UP */
+.event-bubble.tail-up::before {
+  top: -20px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 0 15px 20px 15px;
+  border-color: transparent transparent #ffb703 transparent;
+}
+.event-bubble.tail-up::after {
+  top: -14px;
+  left: 50%;
+  transform: translateX(-50%);
+  border-width: 0 12px 15px 12px;
+  border-color: transparent transparent white transparent;
+}
+
+/* Tail LEFT */
+.event-bubble.tail-left::before {
+  left: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 15px 20px 15px 0;
+  border-color: transparent #ffb703 transparent transparent;
+}
+.event-bubble.tail-left::after {
+  left: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 12px 15px 12px 0;
+  border-color: transparent white transparent transparent;
+}
+
+/* Tail RIGHT */
+.event-bubble.tail-right::before {
+  right: -20px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 15px 0 15px 20px;
+  border-color: transparent transparent transparent #ffb703;
+}
+.event-bubble.tail-right::after {
+  right: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  border-width: 12px 0 12px 15px;
+  border-color: transparent transparent transparent white;
+}

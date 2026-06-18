@@ -17,7 +17,7 @@ export default function EventBubble({ event, playerName }) {
 
   if (event.type === 'DECLARE') {
     return (
-      <div style={bubbleStyle(50, 50)}>
+      <div className="event-bubble" style={{ ...bubbleStyle(), left: '50%', top: '50%', transform: 'translate(-50%, -50%)' }}>
         <h3 style={{ margin: '5px 0' }}>{event.player} declared {event.suitName}!</h3>
         {phase === 'result' && (
           <h2 style={{ color: event.success ? 'green' : 'red', margin: '5px 0' }}>
@@ -29,20 +29,17 @@ export default function EventBubble({ event, playerName }) {
   }
 
   if (event.type === 'ASK') {
-    const getCoords = (name) => {
-      if (name === playerName) return { x: 50, y: 90 };
-      if (name === 'Bot1') return { x: 10, y: 50 };
-      if (name === 'Bot3') return { x: 90, y: 50 };
-      return { x: 50, y: 15 };
+    const getBubbleConfig = (name) => {
+      if (name === playerName) return { bottom: '160px', left: '50%', transform: 'translateX(-50%)', tail: 'down' };
+      if (name === 'Bot1') return { left: '160px', top: '50%', transform: 'translateY(-50%)', tail: 'left' };
+      if (name === 'Bot3') return { right: '160px', top: '50%', transform: 'translateY(-50%)', tail: 'right' };
+      return { top: '160px', left: '50%', transform: 'translateX(-50%)', tail: 'up' };
     };
 
-    const askerCoords = getCoords(event.asker);
-    const targetCoords = getCoords(event.target);
-    const midX = (askerCoords.x + targetCoords.x) / 2;
-    const midY = (askerCoords.y + targetCoords.y) / 2;
+    const config = getBubbleConfig(event.asker);
 
     return (
-      <div style={bubbleStyle(midX, midY)}>
+      <div className={`event-bubble tail-${config.tail}`} style={{ ...bubbleStyle(), ...config }}>
         <div style={{ fontSize: '0.9em', color: '#666', borderBottom: '1px solid #ddd', paddingBottom: '5px', marginBottom: '5px' }}>
           {event.asker} ➔ {event.target}
         </div>
@@ -73,11 +70,8 @@ export default function EventBubble({ event, playerName }) {
   return null;
 }
 
-const bubbleStyle = (x, y) => ({
+const bubbleStyle = () => ({
   position: 'absolute',
-  left: `${x}%`,
-  top: `${y}%`,
-  transform: 'translate(-50%, -50%)',
   background: 'white',
   color: 'black',
   padding: '10px 20px',

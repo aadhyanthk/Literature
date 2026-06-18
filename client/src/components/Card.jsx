@@ -1,16 +1,19 @@
 import React from 'react';
 
-export default function Card({ rank, suit, faceDown }) {
+export default function Card({ rank, suit, faceDown, small }) {
+  const width = small ? '40px' : '80px';
+  const height = small ? '60px' : '120px';
+
   if (faceDown) {
     return (
       <div style={{
-        width: '80px',
-        height: '120px',
+        width,
+        height,
         backgroundColor: '#003049',
-        border: '2px solid #fff',
-        borderRadius: '8px',
+        border: small ? '1px solid #fff' : '2px solid #fff',
+        borderRadius: '4px',
         boxShadow: '2px 2px 5px rgba(0,0,0,0.5)',
-        backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 10px, #d62828 10px, #d62828 20px)'
+        backgroundImage: 'repeating-linear-gradient(45deg, transparent, transparent 5px, #d62828 5px, #d62828 10px)'
       }}></div>
     );
   }
@@ -30,24 +33,24 @@ export default function Card({ rank, suit, faceDown }) {
 
   return (
     <div style={{
-      width: '80px',
-      height: '120px',
+      width,
+      height,
       backgroundColor: '#fff',
-      border: '2px solid #000',
-      borderRadius: '8px',
+      border: small ? '1px solid #000' : '2px solid #000',
+      borderRadius: '4px',
       display: 'flex',
       flexDirection: 'column',
       justifyContent: 'space-between',
-      padding: '5px',
+      padding: small ? '2px' : '5px',
       color: color,
-      fontFamily: 'sans-serif', // Standard clean font for card readability
+      fontFamily: 'sans-serif',
       boxShadow: '2px 2px 5px rgba(0,0,0,0.5)',
       cursor: 'pointer',
       userSelect: 'none'
     }}>
-      <div style={{ fontSize: '1.2rem', fontWeight: 'bold' }}>{rank}</div>
-      <div style={{ fontSize: '2rem', textAlign: 'center' }}>{getSuitSymbol(suit)}</div>
-      <div style={{ fontSize: '1.2rem', fontWeight: 'bold', alignSelf: 'flex-end', transform: 'rotate(180deg)' }}>{rank}</div>
+      <div style={{ fontSize: small ? '0.8rem' : '1.2rem', fontWeight: 'bold' }}>{rank}</div>
+      <div style={{ fontSize: small ? '1.2rem' : '2rem', textAlign: 'center', lineHeight: '1' }}>{getSuitSymbol(suit)}</div>
+      <div style={{ fontSize: small ? '0.8rem' : '1.2rem', fontWeight: 'bold', alignSelf: 'flex-end', transform: 'rotate(180deg)' }}>{rank}</div>
     </div>
   );
 }

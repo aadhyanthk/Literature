@@ -80,11 +80,10 @@ export default function Table() {
       </div>
 
       {/* Opponents Area */}
-      <div style={{ display: 'flex', justifyContent: 'space-around', width: '100%', marginTop: '10px', flexWrap: 'wrap' }}>
-        {otherPlayers.map(p => (
-          <OpponentHand key={p.name} player={p} />
-        ))}
-      </div>
+      {otherPlayers.map((p, index) => {
+         const pos = index === 0 ? 'left' : index === 1 ? 'top' : index === 2 ? 'right' : 'top';
+         return <OpponentHand key={p.name} player={p} position={pos} />
+      })}
 
       {/* Center Action Area */}
       <div style={{ flex: 1, minHeight: 0, display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', margin: '10px 0' }}>

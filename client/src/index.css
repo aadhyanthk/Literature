@@ -71,7 +71,9 @@ input {
 
 /* Card hover effect for overlapping player hand */
 .player-card {
+  position: relative;
   transition: transform 0.2s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.2s;
+  z-index: 1;
 }
 
 .player-card:hover {

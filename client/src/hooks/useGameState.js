@@ -93,11 +93,48 @@ export function useGameState(roomId, playerName, mode) {
     });
   };
 
-  const performDeclare = (player, suitName, declarations) => {
+  const performDeclare = (player, suitName, allocations) => {
     if (!gameState) return;
-    const logMsg = `${player} declared the ${suitName} set`;
+    
+    let success = true;
+    for (const [cardString, allocatedTo] of Object.entries(allocations)) {
+       const [rank, , suit] = cardString.split(' ');
+       const targetHand = gameState.players[allocatedTo]?.hand || [];
+       const actuallyHasCard = targetHand.some(c => c.rank === rank && c.suit === suit);
+       if (!actuallyHasCard) {
+         success = false;
+         break;
+       }
+    }
+    
+    let newPlayers = { ...gameState.players };
+    let newScores = { ...(gameState.scores || { A: 0, B: 0 }) };
+    const declaringTeam = gameState.players[player].team;
+    const opposingTeam = declaringTeam === 'A' ? 'B' : 'A';
+    
+    if (success) {
+      newScores[declaringTeam] = (newScores[declaringTeam] || 0) + 1;
+    } else {
+      newScores[opposingTeam] = (newScores[opposingTeam] || 0) + 1;
+    }
+    
+    for (const cardString of Object.keys(allocations)) {
+       const [rank, , suit] = cardString.split(' ');
+       Object.keys(newPlayers).forEach(pName => {
+          newPlayers[pName] = { ...newPlayers[pName], hand: [...(newPlayers[pName].hand || [])] };
+          const pHand = newPlayers[pName].hand;
+          const idx = pHand.findIndex(c => c.rank === rank && c.suit === suit);
+          if (idx !== -1) pHand.splice(idx, 1);
+       });
+    }
+    
+    const logMsg = `${player} declared the ${suitName} set. It was ${success ? 'CORRECT' : 'INCORRECT'}!`;
+    
     update(ref(db, `rooms/${roomId}`), {
-      log: [...(gameState.log || []), logMsg]
+      log: [...(gameState.log || []), logMsg],
+      lastEvent: { type: 'DECLARE', player, suitName, success, timestamp: Date.now() },
+      scores: newScores,
+      players: newPlayers
     });
   };
 

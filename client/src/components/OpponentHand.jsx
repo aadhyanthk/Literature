@@ -1,7 +1,7 @@
 import React from 'react';
 import Card from './Card';
 
-export default function OpponentHand({ player, position }) {
+export default function OpponentHand({ player, position, score = 0 }) {
   const numCards = player.hand ? player.hand.length : 0;
   
   const positionStyles = {
@@ -33,9 +33,11 @@ export default function OpponentHand({ player, position }) {
         marginBottom: '5px',
         border: '2px solid #ffb703',
         boxShadow: '0 4px 6px rgba(0,0,0,0.5)',
-        fontSize: '0.8rem'
+        fontSize: '0.8rem',
+        textAlign: 'center'
       }}>
-        {player.name}
+        <div>{player.name}</div>
+        {score > 0 && <div style={{ fontSize: '0.8rem', marginTop: '2px' }}>{'⭐'.repeat(score)}</div>}
       </div>
       
       <div style={{ display: 'flex', justifyContent: 'center', marginLeft: '20px' }}>

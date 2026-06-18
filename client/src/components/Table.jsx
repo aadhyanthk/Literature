@@ -79,13 +79,14 @@ export default function Table() {
       {/* Top Bar Info */}
       <div style={{ display: 'flex', justifyContent: 'space-between', borderBottom: '2px solid rgba(255,255,255,0.2)', paddingBottom: '10px' }}>
         <h2>Room: {roomId} | Status: {gameState.status}</h2>
+        <h2>Team A: {'⭐'.repeat(gameState.scores?.A || 0) || '0'} | Team B: {'⭐'.repeat(gameState.scores?.B || 0) || '0'}</h2>
         <h2>Player: {playerName} (Team {playerObj.team})</h2>
       </div>
 
       {/* Opponents Area */}
-      {teammate && <OpponentHand key={teammate.name} player={teammate} position="top" />}
-      {opponents[0] && <OpponentHand key={opponents[0].name} player={opponents[0]} position="left" />}
-      {opponents[1] && <OpponentHand key={opponents[1].name} player={opponents[1]} position="right" />}
+      {teammate && <OpponentHand key={teammate.name} player={teammate} position="top" score={gameState.scores?.[teammate.team] || 0} />}
+      {opponents[0] && <OpponentHand key={opponents[0].name} player={opponents[0]} position="left" score={gameState.scores?.[opponents[0].team] || 0} />}
+      {opponents[1] && <OpponentHand key={opponents[1].name} player={opponents[1]} position="right" score={gameState.scores?.[opponents[1].team] || 0} />}
 
       {/* Action Animation Bubbles */}
       <EventBubble event={gameState.lastEvent} playerName={playerName} />
@@ -115,11 +116,11 @@ export default function Table() {
 
       {/* Player's Hand Area */}
       <div style={{ position: 'absolute', bottom: '20px', left: '50%', transform: 'translateX(-50%)', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '5px' }}>
-        <h3 style={{ margin: '5px' }}>Your Hand</h3>
-        <div style={{ display: 'flex', justifyContent: 'center', marginLeft: '30px' }}>
+        <h3 style={{ margin: '5px' }}>Your Hand {'⭐'.repeat(gameState.scores?.[playerObj.team] || 0)}</h3>
+        <div style={{ display: 'flex', justifyContent: 'center', marginLeft: '20px' }}>
           {hand.map((card, index) => (
-            <div key={index} className="player-card" style={{ marginLeft: '-30px' }}>
-              <Card rank={card.rank} suit={card.suit} small={false} />
+            <div key={index} className="player-card" style={{ marginLeft: '-20px' }}>
+              <Card rank={card.rank} suit={card.suit} small={true} />
             </div>
           ))}
         </div>

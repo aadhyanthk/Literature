@@ -50,7 +50,8 @@ export default function Lobby() {
           className="retro-btn" 
           onClick={() => {
             const name = playerName || 'Player';
-            navigate(`/room/singleplayer?name=${name}&mode=bots`);
+            const botRoomId = 'BOTS-' + Math.random().toString(36).substring(2, 8).toUpperCase();
+            navigate(`/room/${botRoomId}?name=${name}&mode=bots`);
           }} 
           style={{ width: '100%', background: '#d00000', color: '#fff', borderColor: '#9d0208', boxShadow: '4px 4px 0px #9d0208' }}
         >

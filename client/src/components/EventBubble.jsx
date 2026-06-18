@@ -29,14 +29,35 @@ export default function EventBubble({ event, playerName }) {
   }
 
   if (event.type === 'ASK') {
-    const getBubbleConfig = (name) => {
-      if (name === playerName) return { bottom: '160px', left: '50%', transform: 'translateX(-50%)', tail: 'down' };
-      if (name === 'Bot1') return { left: '160px', top: '50%', transform: 'translateY(-50%)', tail: 'left' };
-      if (name === 'Bot3') return { right: '160px', top: '50%', transform: 'translateY(-50%)', tail: 'right' };
-      return { top: '160px', left: '50%', transform: 'translateX(-50%)', tail: 'up' };
+    const getBubbleConfig = (asker, target) => {
+      const isPlayer = asker === playerName || target === playerName;
+      const isTop = asker === 'Bot1' || target === 'Bot1';
+      const isLeft = asker === 'Bot2' || target === 'Bot2';
+      const isRight = asker === 'Bot3' || target === 'Bot3';
+      
+      const t = 'translate(-50%, -50%)';
+
+      if (isPlayer && isLeft) {
+         if (asker === playerName) return { bottom: '30%', left: '30%', transform: t, tail: 'down-right' };
+         else return { bottom: '30%', left: '30%', transform: t, tail: 'left-up' };
+      }
+      if (isPlayer && isRight) {
+         if (asker === playerName) return { bottom: '30%', right: '30%', transform: t, tail: 'down-left' };
+         else return { bottom: '30%', right: '30%', transform: t, tail: 'right-up' };
+      }
+      if (isTop && isLeft) {
+         if (asker === 'Bot1') return { top: '35%', left: '30%', transform: t, tail: 'up-right' };
+         else return { top: '35%', left: '30%', transform: t, tail: 'left-down' };
+      }
+      if (isTop && isRight) {
+         if (asker === 'Bot1') return { top: '35%', right: '30%', transform: t, tail: 'up-left' };
+         else return { top: '35%', right: '30%', transform: t, tail: 'right-down' };
+      }
+      
+      return { top: '50%', left: '50%', transform: t, tail: 'down' };
     };
 
-    const config = getBubbleConfig(event.asker);
+    const config = getBubbleConfig(event.asker, event.target);
 
     return (
       <div className={`event-bubble tail-${config.tail}`} style={{ ...bubbleStyle(), ...config }}>

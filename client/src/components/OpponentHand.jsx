@@ -17,7 +17,7 @@ export default function OpponentHand({ player, position, score = 0 }) {
   } else if (position === 'right') {
     Object.assign(positionStyles, { right: '20px', top: '50%', transform: 'translateY(-50%)' });
   } else if (position === 'top') {
-    Object.assign(positionStyles, { top: '20px', left: '50%', transform: 'translateX(-50%)' });
+    Object.assign(positionStyles, { top: '80px', left: '50%', transform: 'translateX(-50%)' });
   } else {
     Object.assign(positionStyles, { position: 'relative', margin: '10px' });
   }

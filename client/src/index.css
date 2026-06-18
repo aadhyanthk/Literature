@@ -167,3 +167,76 @@ input {
   border-width: 12px 0 12px 15px;
   border-color: transparent transparent transparent white;
 }
+
+/* Diagonal Tails */
+.event-bubble.tail-down-right::before {
+  bottom: -20px; right: 20px;
+  border-width: 20px 0 0 20px; border-color: #ffb703 transparent transparent transparent;
+}
+.event-bubble.tail-down-right::after {
+  bottom: -13px; right: 23px;
+  border-width: 15px 0 0 15px; border-color: white transparent transparent transparent;
+}
+
+.event-bubble.tail-down-left::before {
+  bottom: -20px; left: 20px;
+  border-width: 20px 20px 0 0; border-color: #ffb703 transparent transparent transparent;
+}
+.event-bubble.tail-down-left::after {
+  bottom: -13px; left: 23px;
+  border-width: 15px 15px 0 0; border-color: white transparent transparent transparent;
+}
+
+.event-bubble.tail-up-right::before {
+  top: -20px; right: 20px;
+  border-width: 0 0 20px 20px; border-color: transparent transparent #ffb703 transparent;
+}
+.event-bubble.tail-up-right::after {
+  top: -13px; right: 23px;
+  border-width: 0 0 15px 15px; border-color: transparent transparent white transparent;
+}
+
+.event-bubble.tail-up-left::before {
+  top: -20px; left: 20px;
+  border-width: 0 20px 20px 0; border-color: transparent transparent #ffb703 transparent;
+}
+.event-bubble.tail-up-left::after {
+  top: -13px; left: 23px;
+  border-width: 0 15px 15px 0; border-color: transparent transparent white transparent;
+}
+
+.event-bubble.tail-left-down::before {
+  left: -20px; bottom: 20px;
+  border-width: 20px 20px 0 0; border-color: transparent #ffb703 transparent transparent;
+}
+.event-bubble.tail-left-down::after {
+  left: -13px; bottom: 23px;
+  border-width: 15px 15px 0 0; border-color: transparent white transparent transparent;
+}
+
+.event-bubble.tail-left-up::before {
+  left: -20px; top: 20px;
+  border-width: 0 20px 20px 0; border-color: transparent #ffb703 transparent transparent;
+}
+.event-bubble.tail-left-up::after {
+  left: -13px; top: 23px;
+  border-width: 0 15px 15px 0; border-color: transparent white transparent transparent;
+}
+
+.event-bubble.tail-right-down::before {
+  right: -20px; bottom: 20px;
+  border-width: 20px 0 0 20px; border-color: transparent transparent transparent #ffb703;
+}
+.event-bubble.tail-right-down::after {
+  right: -13px; bottom: 23px;
+  border-width: 15px 0 0 15px; border-color: transparent transparent transparent white;
+}
+
+.event-bubble.tail-right-up::before {
+  right: -20px; top: 20px;
+  border-width: 0 0 20px 20px; border-color: transparent transparent transparent #ffb703;
+}
+.event-bubble.tail-right-up::after {
+  right: -13px; top: 23px;
+  border-width: 0 0 15px 15px; border-color: transparent transparent transparent white;
+}

@@ -58,8 +58,7 @@ export default function Table() {
 
   const playerObj = gameState.players?.[playerName] || { team: '?', hand: [] };
   
-  const opponents = Object.keys(gameState.players || {}).filter(p => gameState.players[p].team !== playerObj.team);
-  const teamMembers = Object.keys(gameState.players || {}).filter(p => gameState.players[p].team === playerObj.team);
+  const teamMemberNames = Object.keys(gameState.players || {}).filter(p => gameState.players[p].team === playerObj.team);
   
   // Use mock hand if the player has no cards yet (before dealing)
   const hand = (playerObj.hand && playerObj.hand.length > 0) ? playerObj.hand : [
@@ -71,6 +70,7 @@ export default function Table() {
   const otherPlayers = Object.values(gameState.players || {}).filter(p => p.name !== playerName);
   const teammate = otherPlayers.find(p => p.team === playerObj.team);
   const opponents = otherPlayers.filter(p => p.team !== playerObj.team);
+  const opponentNames = opponents.map(o => o.name);
 
   return (
     <div className="felt-table" style={{ overflow: 'hidden', position: 'relative' }}>
@@ -128,14 +128,14 @@ export default function Table() {
       <AskModal 
         isOpen={isAskModalOpen} 
         onClose={() => setAskModalOpen(false)} 
-        opponents={opponents}
+        opponents={opponentNames}
         onAsk={(opponent, card) => performAsk(playerName, opponent, card)}
       />
 
       <DeclareModal 
         isOpen={isDeclareModalOpen} 
         onClose={() => setDeclareModalOpen(false)} 
-        teamMembers={teamMembers}
+        teamMembers={teamMemberNames}
         onDeclare={(set, allocations) => performDeclare(playerName, set, allocations)}
       />
     </div>

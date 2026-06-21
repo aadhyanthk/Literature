@@ -38,20 +38,20 @@ export default function EventBubble({ event, playerName }) {
       const t = 'translate(-50%, -50%)';
 
       if (isPlayer && isLeft) {
-         if (asker === playerName) return { bottom: '30%', left: '30%', transform: t, tail: 'down-right' };
-         else return { bottom: '30%', left: '30%', transform: t, tail: 'left-up' };
+         if (asker === playerName) return { bottom: '25%', left: '15%', transform: t, tail: 'down-right' };
+         else return { bottom: '25%', left: '15%', transform: t, tail: 'left-up' };
       }
       if (isPlayer && isRight) {
-         if (asker === playerName) return { bottom: '30%', right: '30%', transform: t, tail: 'down-left' };
-         else return { bottom: '30%', right: '30%', transform: t, tail: 'right-up' };
+         if (asker === playerName) return { bottom: '25%', right: '15%', transform: t, tail: 'down-left' };
+         else return { bottom: '25%', right: '15%', transform: t, tail: 'right-up' };
       }
       if (isTop && isLeft) {
-         if (asker === 'Bot1') return { top: '35%', left: '30%', transform: t, tail: 'up-right' };
-         else return { top: '35%', left: '30%', transform: t, tail: 'left-down' };
+         if (asker === 'Bot1') return { top: '30%', left: '15%', transform: t, tail: 'up-right' };
+         else return { top: '30%', left: '15%', transform: t, tail: 'left-down' };
       }
       if (isTop && isRight) {
-         if (asker === 'Bot1') return { top: '35%', right: '30%', transform: t, tail: 'up-left' };
-         else return { top: '35%', right: '30%', transform: t, tail: 'right-down' };
+         if (asker === 'Bot1') return { top: '30%', right: '15%', transform: t, tail: 'up-left' };
+         else return { top: '30%', right: '15%', transform: t, tail: 'right-down' };
       }
       
       return { top: '50%', left: '50%', transform: t, tail: 'down' };
